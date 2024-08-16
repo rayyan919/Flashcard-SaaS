@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const systemPrompt = `
-You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
+You are a flashcard creator. You take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
 Both front and back should be one sentence long.
 You should return in the following JSON format:
 {
-  "flashcards":[
+  "flashcards": [
     {
       "front": "Front of the card",
       "back": "Back of the card"
@@ -14,27 +18,36 @@ You should return in the following JSON format:
 }
 `;
 
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain",
+};
+
 export async function POST(req) {
   const data = await req.text();
 
-  const response = await fetch('https://api.gemini.com/v1/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`
-    },
-    body: JSON.stringify({
-      prompt: systemPrompt + data,
-      model: 'gemini-1',
-      response_format: {type: 'json_object'},
-    })
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-pro", // Ensure you use the correct model name
   });
 
-  const result = await response.json();
+  const chatSession = model.startChat({
+    generationConfig,
+    history: [],
+  });
 
-  // Assuming the response structure is similar to OpenAI's:
-  const flashcards = JSON.parse(result.choices[0].message.content);
+  // Send the system prompt with the user data to Gemini AI
+  const result = await chatSession.sendMessage(systemPrompt + data);
+
+  // Assuming the result is in the format we expect (plain text containing JSON)
+  let flashcards;
+  try {
+    flashcards = JSON.parse(result.response.text());
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to parse response from Gemini AI' }, { status: 500 });
+  }
 
   return NextResponse.json(flashcards.flashcard);
 }
-

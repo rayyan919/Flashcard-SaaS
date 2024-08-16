@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Grid, Container } from '@mui/material';
+import Head from 'next/head';
 import { SignedOut, SignedIn, UserButton } from '@clerk/nextjs';
 import getStripe from '@/utils/get-stripe'
 
 
 export default function HomePage() {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="100vw">
       <Head>
         <title>FlashCard SaaS</title>
         <meta name="description" content="Create flashcard from your text"/>
@@ -57,7 +58,47 @@ export default function HomePage() {
           Pricing
         </Typography>
         <Grid container spacing={4} justifyContent="center">
-          {/* Pricing plans go here */}
+          <Grid item xs={12} md={6}>
+            <Box sx={{
+              p: 3,
+              border: '1px solid',
+              borderColor: 'grey.300',
+              borderRadius: 2
+            }}
+          >
+            <Typography variant="h5" gutterBottom>Basic</Typography>
+            <Typography variant="h6" gutterBottom>Free</Typography>
+            <Typography>
+              {' '}
+              Access to basic flashcard features and limited storage.
+            </Typography>
+            <Button variant="contained" color="primary" sx={{mt: 2}}>
+              Choose basic
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+        <Box sx={{
+          p: 3,
+          border: '1px solid',
+          borderColor: 'grey.300',
+          borderRadius: 2
+        }}
+      >
+            <Typography variant="h5" gutterBottom>Pro</Typography>
+            <Typography variant="h6" gutterBottom>$7 / month</Typography>
+            <Typography>
+              {' '}
+              Access to unlimited flashcard features and much more storage.
+            </Typography>
+            <Button variant="contained" color="primary" sx={{mt: 2}}>
+              Choose Pro
+            </Button>
+
+            </Box>
+
+          </Grid>
         </Grid>
       </Box>
     </Container>

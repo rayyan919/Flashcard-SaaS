@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import { useUser } from '@clerk/nextjs';
 import { collection, doc, getDocs } from 'firebase/firestore';
 import { Container, Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
-import { db } from '../firebase'; // Assuming you have a firebase.js file exporting the db instance
+import db from '../firebase'; // Assuming you have a firebase.js file exporting the db instance
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
