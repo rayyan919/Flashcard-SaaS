@@ -1,9 +1,10 @@
+'use client'
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import { Container, Grid, Card, CardActionArea, CardContent, Typography } from '@mui/material';
-import db from '../firebase'; // Assuming you have a firebase.js file exporting the db instance
+import { db } from '@/firebase';// Assuming you have a firebase.js file exporting the db instance
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -25,12 +26,16 @@ export default function Flashcard() {
     getFlashcards();
   }, [user]);
 
+  if (!isLoaded || !isSignedIn){
+    return <></>
+  }
+
   const handleCardClick = (id) => {
     router.push(`/flashcard?id=${id}`);
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="100vw">
       <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcards.map((flashcard, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
