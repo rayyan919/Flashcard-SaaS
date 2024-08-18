@@ -127,25 +127,6 @@ export const textVariant = (delay) => {
     };
   };
 
-//   export const zoomIn = (delay = 0.2, duration = 0.8) => {
-//     return {
-//       hidden: {
-//         scale: 0,
-//         opacity: 0,
-//       },
-//       show: {
-//         scale: 1,
-//         opacity: 1,
-//         transition: {
-//           type: "spring",
-//           stiffness: 260,
-//           damping: 20,
-//           delay: delay,
-//           duration: duration,
-//         },
-//       },
-//     };
-//   };
 
   export const rotateIn = (delay = 0.2, duration = 0.8) => {
     return {
