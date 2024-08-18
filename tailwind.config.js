@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "app/page.js",
+    "app/generate/page.js"
     
     // "./app/**/*.{js,ts,jsx,tsx,mdx}",
     // "./pages/**/*.{js,ts,jsx,tsx,mdx}",

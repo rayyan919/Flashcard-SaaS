@@ -8,6 +8,7 @@ import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import { motion, useInView } from 'framer-motion';
 import { slideUp, textVariant, fadeIn, fadeInBounce } from '@/utils/motions';
 import Tilt from 'react-parallax-tilt';
+import "/app/globals.css"
 
 export default function HomePage() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function HomePage() {
         variants={fadeIn('right', 'spring', index * 0.5, 2)}
         initial="hidden"
         animate={isInView ? 'show' : 'hidden'}
-        className="p-5 rounded-lg shadow-lg bg-[#B3DEC1] hover:shadow-2xl min-h-[250px] flex justify-center items-center max-w-sm"
+        className="p-5 rounded-[20px] shadow-card bg-[#B3DEC1] hover:shadow-2xl min-h-[250px] flex justify-center items-center max-w-sm ); "
       >
         <div>
           <h3 className=" text-2xl font-semibold text-[#750D37] mb-4">{title}</h3>
@@ -143,7 +144,7 @@ export default function HomePage() {
         variants={fadeIn('up', 'spring', index * 0.5, 2)}
         initial="hidden"
         animate={isInView ? 'show' : 'hidden'}
-        className="p-8 rounded-lg shadow-lg bg-[#B3DEC1] hover:shadow-2xl flex flex-col justify-between min-h-[400px] max-w-xs sm:max-w-sm mx-auto border border-gray-300"
+        className="p-8 rounded-lg shadow-lg bg-[#B3DEC1] hover:shadow-2xl flex flex-col justify-between min-h-[400px] max-w-xs sm:max-w-sm mx-auto border border-gray-300 shadow-card2"
       >
         <div>
           <h3 className="text-3xl font-semibold text-[#750D37] mb-6">
@@ -176,10 +177,20 @@ export default function HomePage() {
     return (
       <section ref={ref} className="mt-24  flex justify-center items-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-[#B3DEC1] mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
+          {/* <h2 className="text-[#B3DEC1] mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
             Pricing Plans
-          </h2>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-10 px-5">
+          </h2> */}
+          <motion.div
+            variants={fadeIn('up', 'spring', 2, 2)}
+            initial="hidden"
+            animate="show"
+          >
+            <h2 className="text-[#B3DEC1] mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
+              Pricing Plans
+            </h2>
+          </motion.div>
+
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-10 px-5 ">
             {pricingPlans.map((plan, index) => (
               <PricingCard key={index} plan={plan} index={index} isInView={isInView} />
             ))}
@@ -201,19 +212,21 @@ export default function HomePage() {
 
       {/* Navbar */}
       <nav className="bg-[#750D37] p-5 flex justify-between items-center w-full">
-        <h1 className="text-[#DBF9F0] text-xl font-bold">EduCard</h1>
+        <a
+          href='/'
+          className="text-[#DBF9F0] text-xl font-bold  hover:text-[#B3DEC1]">EduCard</a>
         <div>
           <SignedOut>
             <div className="flex justify-center items-center">
               <a
                 href="/sign-in"
-                className="text-[#DBF9F0] flex items-center hover:text-[#B3DEC1] mr-4"
+                className="text-[#DBF9F0] flex items-center font-semibold hover:text-[#B3DEC1] mr-4"
               >
                 <FaSignInAlt className="mr-2" /> Login
               </a>
               <a
                 href="/sign-up"
-                className="text-[#DBF9F0] flex items-center hover:text-[#B3DEC1]"
+                className="text-[#DBF9F0] flex items-center font-semibold hover:text-[#B3DEC1]"
               >
                 <FaUserPlus className="mr-2" /> Sign Up
               </a>
@@ -239,7 +252,7 @@ export default function HomePage() {
             />
           </div>
           <motion.div variants={textVariant(0.1)} initial="hidden" animate="show">
-            <h1 className="font-black text-[#B3DEC1] lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-2 text-center">
+            <h1 className="font-black text-[#B3DEC1] lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-2 text-center hover:text-opacity-90">
               Welcome to EduCard
             </h1>
           </motion.div>
@@ -250,13 +263,13 @@ export default function HomePage() {
               </p>
             </div>
             <button
-              className="bg-[#750D37] hover:bg-[#c1b61f] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-8 mt-5 rounded"
+              className="bg-[#750D37] hover:bg-[#B3DEC1] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-8 mt-5 rounded"
               onClick={handleGetStartedClick}
             >
               Get Started
             </button>
             <button
-              className="bg-[#750D37] hover:bg-[#c1b61f] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-6 mt-5 ml-4 rounded"
+              className="bg-[#750D37] hover:bg-[#B3DEC1] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-6 mt-5 ml-4 rounded"
               onClick={handleSavedFlashcardsClick}
             >
               My Flashcards
@@ -270,3 +283,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+

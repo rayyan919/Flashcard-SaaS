@@ -22,7 +22,7 @@ export async function POST(req) {
         - Highlight connections between related concepts to reinforce learning.
     6. User Interaction: Encourage users to actively engage with the flashcards by including interactive elements such as true/false questions, multiple-choice questions, or prompts to recall information before revealing the answer.
     7. Tone and Style: Maintain a neutral, encouraging, and informative tone to support a positive learning experience. Adapt the language to the level of the user, whether they are beginners, intermediate, or advanced learners.
-    8. Only generate 9 flashcards.
+    8. Only generate 9 flashcards unless the user specifies the number of flashcards.
 
     Return in the following JSON format 
     {
