@@ -1,14 +1,17 @@
-'use client'
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, Grid, Container } from '@mui/material';
+'use client';
+import React, { useRef } from 'react';
 import { SignedOut, SignedIn, UserButton, useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import getStripe from '@/utils/get-stripe';
 import Head from 'next/head';
+import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { motion, useInView } from 'framer-motion';
+import { slideUp, textVariant, fadeIn, fadeInBounce } from '@/utils/motions';
+import Tilt from 'react-parallax-tilt';
 
 export default function HomePage() {
   const router = useRouter();
-  const { isSignedIn } = useAuth(); 
+  const { isSignedIn } = useAuth();
 
   const handleSubmit = async () => {
     const checkoutSession = await fetch('/api/checkout_sessions', {
@@ -16,12 +19,12 @@ export default function HomePage() {
       headers: { origin: 'http://localhost:3000' },
     });
     const checkoutSessionJson = await checkoutSession.json();
-  
+
     const stripe = await getStripe();
     const { error } = await stripe.redirectToCheckout({
       sessionId: checkoutSessionJson.id,
     });
-  
+
     if (error) {
       console.warn(error.message);
     }
@@ -43,124 +46,227 @@ export default function HomePage() {
     }
   };
 
+  const FeatureCard = ({ title, description, index, isInView }) => (
+    <Tilt>
+      <motion.div
+        variants={fadeIn('right', 'spring', index * 0.5, 2)}
+        initial="hidden"
+        animate={isInView ? 'show' : 'hidden'}
+        className="p-5 rounded-lg shadow-lg bg-[#B3DEC1] hover:shadow-2xl min-h-[250px] flex justify-center items-center max-w-sm"
+      >
+        <div>
+          <h3 className=" text-2xl font-semibold text-[#750D37] mb-4">{title}</h3>
+          <p className="text-[#210124]">{description}</p>
+        </div>
+      </motion.div>
+    </Tilt>
+  );
+
+  const KeyFeatures = () => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+
+    const features = [
+      {
+        title: 'Simple Input',
+        description:
+          'Just paste your text, and EduCard will turn it into effective flashcards in no time.',
+      },
+      {
+        title: 'Intelligent Processing',
+        description:
+          'Our AI-powered system extracts key information to create concise, easy-to-study flashcards.',
+      },
+      {
+        title: 'Access Anywhere',
+        description:
+          'Study wherever you are, on any device. Your flashcards are always with you.',
+      },
+    ];
+
+    return (
+      <section ref={ref} className="my-24 text-center">
+        <motion.div variants={textVariant(0.5)}>
+          <h2 className=" text-[#B3DEC1] mb-10 text-center font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]">
+            Key Features
+          </h2>
+        </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 px-10 font-semibold">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={feature.title}
+              title={feature.title}
+              description={feature.description}
+              index={index}
+              isInView={isInView}
+            />
+          ))}
+        </div>
+      </section>
+    );
+  };
+
+  const pricingPlans = [
+    {
+      title: 'Basic',
+      price: '$0 / month',
+      description: 'No subscription required',
+      features: [
+        'Limited AI Flashcards',
+        '20,000 characters per text upload',
+        'No document uploading',
+        'No exporting',
+        'Limited new features',
+      ],
+      buttonText: 'Get Started',
+      buttonAction: handleGetStartedClick,
+    },
+    {
+      title: 'Pro',
+      price: '$10 / month',
+      description: 'Billed monthly',
+      features: [
+        'Unlimited AI Flashcards',
+        '60,000 characters per text upload',
+        'Upload documents',
+        'Export to Anki, PDF and more',
+        'New features soon',
+      ],
+      buttonText: 'Subscribe',
+      buttonAction: handleSubmit,
+    },
+  ];
+
+  const PricingCard = ({ plan, index, isInView }) => (
+    <Tilt>
+      <motion.div
+        variants={fadeIn('up', 'spring', index * 0.5, 2)}
+        initial="hidden"
+        animate={isInView ? 'show' : 'hidden'}
+        className="p-8 rounded-lg shadow-lg bg-[#B3DEC1] hover:shadow-2xl flex flex-col justify-between min-h-[400px] max-w-xs sm:max-w-sm mx-auto border border-gray-300"
+      >
+        <div>
+          <h3 className="text-3xl font-semibold text-[#750D37] mb-6">
+            {plan.title}
+          </h3>
+          <p className="text-xl text-[#210124] mb-4">{plan.price}</p>
+          <p className="text-md text-[#210124] mb-3">{plan.description}</p>
+          <ul className="text-[#210124] mb-8 space-y-3">
+            {plan.features.map((feature, i) => (
+              <li key={i} className="text-md">
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <button
+          className="bg-[#750D37] hover:bg-[#210124] text-white font-bold py-3 px-8 rounded"
+          onClick={plan.buttonAction}
+        >
+          {plan.buttonText}
+        </button>
+      </motion.div>
+    </Tilt>
+  );
+
+  const PricingPlans = () => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+
+    return (
+      <section ref={ref} className="mt-24  flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-[#B3DEC1] mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
+            Pricing Plans
+          </h2>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-10 px-5">
+            {pricingPlans.map((plan, index) => (
+              <PricingCard key={index} plan={plan} index={index} isInView={isInView} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
-    <Container maxWidth="lg">
+    <div className="max-w-full mx-auto bg-[#210124]">
       <Head>
-        <title>FlashCard SaaS</title>
-        <meta name="description" content="Create flashcard from your text" />
+        <title>EduCard</title>
+        <meta
+          name="description"
+          content="Effortlessly generate study flashcards from your notes."
+        />
       </Head>
 
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Flashcard SaaS
-          </Typography>
+      {/* Navbar */}
+      <nav className="bg-[#750D37] p-5 flex justify-between items-center w-full">
+        <h1 className="text-[#DBF9F0] text-xl font-bold">EduCard</h1>
+        <div>
           <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-up">Sign Up</Button>
+            <div className="flex justify-center items-center">
+              <a
+                href="/sign-in"
+                className="text-[#DBF9F0] flex items-center hover:text-[#B3DEC1] mr-4"
+              >
+                <FaSignInAlt className="mr-2" /> Login
+              </a>
+              <a
+                href="/sign-up"
+                className="text-[#DBF9F0] flex items-center hover:text-[#B3DEC1]"
+              >
+                <FaUserPlus className="mr-2" /> Sign Up
+              </a>
+            </div>
           </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
-        </Toolbar>
-      </AppBar>
+        </div>
+      </nav>
 
-      <Box sx={{ textAlign: 'center', my: 4 }}>
-        <Typography variant="h2" component="h1" gutterBottom>
-          Welcome to Flashcard SaaS
-        </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
-          The easiest way to create flashcards from your text.
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2, mr: 2 }}
-          onClick={handleGetStartedClick}
-        >
-          Get Started
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ mt: 2, ml: 2 }}
-          onClick={handleSavedFlashcardsClick}
-        >
-          Saved Flashcards
-        </Button>
-      </Box>
-
-      <Box sx={{ my: 6, textAlign: 'center' }}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Features
-        </Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>Easy Text Input</Typography>
-            <Typography>
-              Simply input your text and let our software do the rest. Creating flashcards has never been easier.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>Smart Flashcards</Typography>
-            <Typography>
-              Our AI intelligently breaks down your text into concise flashcards perfect for studying.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>Accessible Anywhere</Typography>
-            <Typography>
-              Access your flashcards from any device, at any time. Study on the go with ease.
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box sx={{ my: 6, textAlign: 'center' }}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Pricing
-        </Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={6}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2,
-              }}
+      {/* Welcome Section */}
+      <section className="text-center">
+        <div className="my-14">
+          <div className="flex justify-center items-center">
+            <motion.img
+              src="/educard_logo.png"
+              alt="educard"
+              className="w-56 h-56 object-contain"
+              variants={fadeInBounce(0.1, 0.8)} // Or the chosen animation
+              initial="hidden"
+              animate="show"
+            />
+          </div>
+          <motion.div variants={textVariant(0.1)} initial="hidden" animate="show">
+            <h1 className="font-black text-[#B3DEC1] lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-2 text-center">
+              Welcome to EduCard
+            </h1>
+          </motion.div>
+          <motion.div variants={slideUp(0.2)} initial="hidden" animate="show">
+            <div className=' flex justify-center items-center'>
+              <p className="text-[#DBF9F0] font-medium text-center font-sm lg:text-[22px] sm:text-[18px] xs:text-[16px] text-[16px] lg:leading-[40px]  max-w-2xl">
+                Master your studies with EduCard. Create custom flashcards in seconds or convert notes instantly.
+              </p>
+            </div>
+            <button
+              className="bg-[#750D37] hover:bg-[#c1b61f] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-8 mt-5 rounded"
+              onClick={handleGetStartedClick}
             >
-              <Typography variant="h5" gutterBottom>Basic</Typography>
-              <Typography variant="h6" gutterBottom>Free</Typography>
-              <Typography>
-                Access to basic flashcard features and limited storage.
-              </Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleGetStartedClick}>
-                Choose Basic
-              </Button>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2,
-              }}
+              Get Started
+            </button>
+            <button
+              className="bg-[#750D37] hover:bg-[#c1b61f] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-6 mt-5 ml-4 rounded"
+              onClick={handleSavedFlashcardsClick}
             >
-              <Typography variant="h5" gutterBottom>Pro</Typography>
-              <Typography variant="h6" gutterBottom>$10/ month</Typography>
-              <Typography>
-                Unlimited flashcards and storage, with priority support.
-              </Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmit}>
-                Choose Pro
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+              My Flashcards
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      <KeyFeatures />
+      <PricingPlans />
+    </div>
   );
 }
