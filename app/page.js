@@ -53,11 +53,11 @@ export default function HomePage() {
         variants={fadeIn('right', 'spring', index * 0.5, 2)}
         initial="hidden"
         animate={isInView ? 'show' : 'hidden'}
-        className="p-5 rounded-[20px] shadow-card bg-[#B3DEC1] hover:shadow-2xl min-h-[250px] flex justify-center items-center max-w-sm ); "
+        className="p-5 rounded-[20px]  bg-[#1d2d44] hover:shadow-2xl min-h-[250px] flex justify-center items-center max-w-sm  mx-auto border border-gray-300 shadow-card2  ); "
       >
         <div>
-          <h3 className=" text-2xl font-semibold text-[#750D37] mb-4">{title}</h3>
-          <p className="text-[#210124]">{description}</p>
+          <h3 className=" text-2xl font-semibold text-[#748cab]  mb-4">{title}</h3>
+          <p className="text-[#f0ebd8]">{description}</p>
         </div>
       </motion.div>
     </Tilt>
@@ -88,7 +88,7 @@ export default function HomePage() {
     return (
       <section ref={ref} className="my-24 text-center">
         <motion.div variants={textVariant(0.5)}>
-          <h2 className=" text-[#B3DEC1] mb-10 text-center font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]">
+          <h2 className=" bg-clip-text text-transparent bg-gradient-to-t from-[#748cab] to-[#f0ebd8]  mb-10 text-center font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]">
             Key Features
           </h2>
         </motion.div>
@@ -144,15 +144,15 @@ export default function HomePage() {
         variants={fadeIn('up', 'spring', index * 0.5, 2)}
         initial="hidden"
         animate={isInView ? 'show' : 'hidden'}
-        className="p-8 rounded-lg shadow-lg bg-[#B3DEC1] hover:shadow-2xl flex flex-col justify-between min-h-[400px] max-w-xs sm:max-w-sm mx-auto border border-gray-300 shadow-card2"
+        className="p-8 rounded-lg shadow-lg bg-[#1d2d44] hover:shadow-2xl flex flex-col justify-between min-h-[400px] max-w-xs sm:max-w-sm mx-auto border border-gray-300 shadow-card2"
       >
         <div>
-          <h3 className="text-3xl font-semibold text-[#750D37] mb-6">
+          <h3 className="text-3xl font-semibold text-[#748cab] mb-6">
             {plan.title}
           </h3>
-          <p className="text-xl text-[#210124] mb-4">{plan.price}</p>
-          <p className="text-md text-[#210124] mb-3">{plan.description}</p>
-          <ul className="text-[#210124] mb-8 space-y-3">
+          <p className="text-xl text-[#f0ebd8] mb-4">{plan.price}</p>
+          <p className="text-md text-[#f0ebd8] mb-3">{plan.description}</p>
+          <ul className="text-[#f0ebd8] mb-8 space-y-3">
             {plan.features.map((feature, i) => (
               <li key={i} className="text-md">
                 {feature}
@@ -161,7 +161,7 @@ export default function HomePage() {
           </ul>
         </div>
         <button
-          className="bg-[#750D37] hover:bg-[#210124] text-white font-bold py-3 px-8 rounded"
+          className="bg-[#f0ebd8] hover:bg-[#0d1321] hover:text-[#f0ebd8] text-[#1d2d44] font-bold py-3 px-8 rounded"
           onClick={plan.buttonAction}
         >
           {plan.buttonText}
@@ -177,15 +177,12 @@ export default function HomePage() {
     return (
       <section ref={ref} className="mt-24  flex justify-center items-center min-h-screen">
         <div className="text-center">
-          {/* <h2 className="text-[#B3DEC1] mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
-            Pricing Plans
-          </h2> */}
           <motion.div
             variants={fadeIn('up', 'spring', 2, 2)}
             initial="hidden"
             animate="show"
           >
-            <h2 className="text-[#B3DEC1] mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
+            <h2 className="bg-clip-text text-transparent bg-gradient-to-t from-[#748cab] to-[#f0ebd8]  mb-10 font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
               Pricing Plans
             </h2>
           </motion.div>
@@ -201,7 +198,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="max-w-full mx-auto bg-[#210124]">
+    <div className="max-w-full mx-auto bg-[#0d1321]">
       <Head>
         <title>EduCard</title>
         <meta
@@ -211,22 +208,22 @@ export default function HomePage() {
       </Head>
 
       {/* Navbar */}
-      <nav className="bg-[#750D37] p-5 flex justify-between items-center w-full">
+      <nav className="bg-[#11192c] bg-opacity-90  p-5 flex justify-between items-center w-full sticky top-0 z-50">
         <a
           href='/'
-          className="text-[#DBF9F0] text-xl font-bold  hover:text-[#B3DEC1]">EduCard</a>
+          className="text-[#f0ebd8] text-xl font-bold  hover:text-[#748cab]">EduCard</a>
         <div>
           <SignedOut>
             <div className="flex justify-center items-center">
               <a
                 href="/sign-in"
-                className="text-[#DBF9F0] flex items-center font-semibold hover:text-[#B3DEC1] mr-4"
+                className="text-[#f0ebd8] flex items-center font-semibold hover:text-[#748cab] mr-4"
               >
                 <FaSignInAlt className="mr-2" /> Login
               </a>
               <a
                 href="/sign-up"
-                className="text-[#DBF9F0] flex items-center font-semibold hover:text-[#B3DEC1]"
+                className="text-[#f0ebd8] flex items-center font-semibold hover:text-[#748cab]"
               >
                 <FaUserPlus className="mr-2" /> Sign Up
               </a>
@@ -251,25 +248,26 @@ export default function HomePage() {
               animate="show"
             />
           </div>
+
           <motion.div variants={textVariant(0.1)} initial="hidden" animate="show">
-            <h1 className="font-black text-[#B3DEC1] lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-2 text-center hover:text-opacity-90">
+            <h1 className="font-black bg-clip-text text-transparent bg-gradient-to-t from-[#748cab] to-[#f0ebd8]  lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-2 text-center hover:text-opacity-90">
               Welcome to EduCard
             </h1>
           </motion.div>
           <motion.div variants={slideUp(0.2)} initial="hidden" animate="show">
             <div className=' flex justify-center items-center'>
-              <p className="text-[#DBF9F0] font-medium text-center font-sm lg:text-[22px] sm:text-[18px] xs:text-[16px] text-[16px] lg:leading-[40px]  max-w-2xl">
+              <p className="text-[#f0ebd8] font-medium text-center font-sm lg:text-[22px] sm:text-[18px] xs:text-[16px] text-[16px] lg:leading-[40px]  max-w-2xl">
                 Master your studies with EduCard. Create custom flashcards in seconds or convert notes instantly.
               </p>
             </div>
             <button
-              className="bg-[#750D37] hover:bg-[#B3DEC1] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-8 mt-5 rounded"
+              className="hover:bg-[#f0ebd8] bg-[#1d2d44] text-[#f0ebd8] hover:text-[#1d2d44] font-bold py-3 px-8 mt-5 rounded"
               onClick={handleGetStartedClick}
             >
               Get Started
             </button>
             <button
-              className="bg-[#750D37] hover:bg-[#B3DEC1] hover:text-[#210124] text-[#B3DEC1] font-bold py-3 px-6 mt-5 ml-4 rounded"
+              className="bg-[#f0ebd8] hover:bg-[#1d2d44] hover:text-[#f0ebd8] text-[#1d2d44] font-bold py-3 px-6 mt-5 ml-4 rounded"
               onClick={handleSavedFlashcardsClick}
             >
               My Flashcards

@@ -21,6 +21,7 @@ export default function Generate() {
     const [flipped, setFlipped] = useState([])
     const [open, setOpen] = useState(false)
     const router = useRouter()
+    const [loading, setLoading] = useState(false) 
     const flashcardRef = useRef(null) // Reference to the flashcards container
 
     const cleanResponse = (text) => {
@@ -32,6 +33,7 @@ export default function Generate() {
     };
 
     const handleSubmit = async () => {
+        setLoading(true); // Set loading to true when the generation starts
         try {
             const response = await fetch("/api/generate", {
                 method: "POST",
@@ -57,9 +59,10 @@ export default function Generate() {
             }
         } catch (error) {
             console.error('Error fetching flashcards:', error);
+        } finally {
+            setLoading(false); // Set loading to false once the process is complete
         }
     };
-
     const handleCardClick = (id) => {
         setFlipped((prev) => ({
             ...prev,
@@ -120,13 +123,13 @@ export default function Generate() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#210124]">
+        <div className="min-h-screen flex flex-col bg-[#0d1321]">
             <Head>
                 <title>Generate Flashcards</title>
             </Head>
 
             {/* Navbar */}
-            <nav className="bg-[#750D37] p-3 flex justify-between items-center w-full">
+            <nav className="bg-[#11192c] bg-opacity-90  py-4 px-5 flex justify-between items-center w-full sticky top-0 z-50">
                 <div className="flex justify-center items-center">
                     <img
                         src="/educard_logo.png"
@@ -138,7 +141,7 @@ export default function Generate() {
                     />
                     <a
                         href='/'
-                        className="text-[#DBF9F0] text-xl font-bold hover:text-[#B3DEC1]">
+                        className="text-[#f0ebd8] text-xl font-bold  hover:text-[#748cab]">
                         EduCard
                     </a>
                 </div>
@@ -147,13 +150,13 @@ export default function Generate() {
                         <div className="flex justify-center items-center">
                             <a
                                 href="/sign-in"
-                                className="text-[#DBF9F0] flex items-center font-semibold hover:text-[#B3DEC1] mr-4"
+                                className="text-[#f0ebd8] text-xl font-bold  hover:text-[#748cab] mr-4"
                             >
                                 <FaSignInAlt className="mr-2" /> Login
                             </a>
                             <a
                                 href="/sign-up"
-                                className="text-[#DBF9F0] flex items-center font-semibold hover:text-[#B3DEC1]"
+                                className="text-[#f0ebd8] text-xl font-bold  hover:text-[#748cab]"
                             >
                                 <FaUserPlus className="mr-2" /> Sign Up
                             </a>
@@ -171,7 +174,7 @@ export default function Generate() {
                     initial="hidden"
                     animate="show"
                 >
-                    <div className="text-[#b3dec1] mb-10 text-center font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]">
+                    <div className="font-black bg-clip-text text-transparent bg-gradient-to-t from-[#748cab] to-[#f0ebd8]  lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-2 text-center hover:text-opacity-90">
                         Generate Flashcards
                     </div>
                 </motion.div>
@@ -185,7 +188,7 @@ export default function Generate() {
                     <textarea
                         value={text}
                         onChange={(e) => setText(e.target.value)}
-                        className="w-full p-4 text-lg text-[#210124] bg-[#b3dec1] font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#750D37] min-h-[250px]"
+                        className="w-full p-4 text-lg text-[#0d1321] bg-[#f0ebd8] font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#1d2d44] min-h-[250px]"
                         placeholder="Enter text here..."
                         rows="6"
                     ></textarea>
@@ -197,16 +200,18 @@ export default function Generate() {
                     className="flex justify-center items-center"
                 >
                     <button
-                        className="bg-[#750D37] text-[#B3DEC1] hover:bg-[#B3DEC1] hover:text-[#210124] font-bold py-3 px-8 rounded hover:scale-110"
+                        ref={flashcardRef}
+                        className="hover:bg-[#f0ebd8] bg-[#1d2d44] text-[#f0ebd8] hover:text-[#1d2d44] font-bold py-3 px-8 mt-5 rounded hover:scale-110"
                         onClick={handleSubmit}
+                        disabled={loading}
                     >
-                        Generate
+                        {loading ? "Loading..." : "Generate"}
                     </button>
                 </motion.div>
-
+                
                 {flashcards.length > 0 && (
-                    <div ref={flashcardRef} className="mt-20">
-                        <h2 className="text-4xl text-[#B3DEC1] font-black mb-8 text-center">Collection Preview</h2>
+                    <div className="mt-20">
+                        <h2 className="font-black bg-clip-text text-transparent bg-gradient-to-t from-[#748cab] to-[#f0ebd8]  lg:text-[70px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mb-10 text-center hover:text-opacity-90">Collection Preview</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {flashcards.map((flashcard, index) => (
                                 <Tilt>
@@ -215,7 +220,7 @@ export default function Generate() {
                                         variants={fadeIn('right', 'spring', index * 0.5, 2)} // Similar to FeatureCard's animation
                                         initial="hidden"
                                         animate="show"
-                                        className="cursor-pointer p-5 rounded-[20px] shadow-card bg-[#B3DEC1] hover:shadow-2xl"
+                                        className="cursor-pointer p-5 rounded-[20px] shadow-card2 bg-[#1d2d44] hover:shadow-2xl "
                                         onClick={() => handleCardClick(index)}
                                     >
                                         <div
@@ -239,7 +244,7 @@ export default function Generate() {
                                                 }}
                                             >
                                                 <div
-                                                    className="flip-card-front bg-[#B3DEC1] text-[#210124] p-4 rounded-lg shadow-lg flex justify-center items-center text-center"
+                                                    className="flip-card-front bg-[#1d2d44] text-[#f0ebd8] p-4 rounded-2xl shadow-lg flex justify-center items-center text-center mx-auto border border-gray-300 shadow-card2 "
                                                     style={{
                                                         backfaceVisibility: 'hidden',
                                                         position: 'absolute',
@@ -250,7 +255,7 @@ export default function Generate() {
                                                     <p className="text-lg font-semibold">{flashcard.front}</p>
                                                 </div>
                                                 <div
-                                                    className="flip-card-back bg-[#B3DEC1] text-[#210124] p-4 rounded-lg shadow-lg flex justify-center items-center text-center"
+                                                    className="flip-card-back bg-[#1d2d44] text-[#f0ebd8] p-4 rounded-2xl shadow-lg flex justify-center items-center text-center mx-auto border border-gray-300 shadow-card2"
                                                     style={{
                                                         backfaceVisibility: 'hidden',
                                                         position: 'absolute',
@@ -269,7 +274,7 @@ export default function Generate() {
                         </div>
                         <div className="flex justify-center items-center mt-10">
                             <button
-                                className="bg-[#750D37] text-[#B3DEC1] hover:bg-[#B3DEC1] hover:text-[#210124] font-bold py-3 px-8 rounded hover:scale-110"
+                                className="hover:bg-[#f0ebd8] bg-[#1d2d44] text-[#f0ebd8] hover:text-[#1d2d44] font-bold py-3 px-8 rounded hover:scale-110"
                                 onClick={handleOpen}
                             >
                                 Save Collection
@@ -280,25 +285,25 @@ export default function Generate() {
 
                 {open && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                        <div className="bg-[#B3DEC1] p-6 rounded-lg shadow-lg w-11/12 max-w-md">
-                            <h3 className="text-xl font-bold mb-4 text-[#210124] text-center">Save Collection</h3>
+                        <div className="bg-[#1d2d44] p-6 rounded-lg shadow-lg w-11/12 max-w-md">
+                            <h3 className="text-xl font-bold mb-4 text-[#f0ebd8] text-center">Save Collection</h3>
                             <input
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 type="text"
                                 placeholder="Enter collection name..."
-                                className="w-full p-3 border text-[#210124] font-semibold border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-[#750D37]"
+                                className="w-full p-3 border text-[#0d1321] font-semibold border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-[#3e5c76]"
                             />
                             <div className="flex justify-end space-x-4">
                                 <button
                                     onClick={handleClose}
-                                    className="py-2 px-4  bg-[#750D37] text-[#B3DEC1] hover:bg-opacity-90 rounded-lg  hover:scale-110"
+                                    className="py-2 px-4 bg-[#f0ebd8] text-[#1d2d44] font-semibold hover:bg-opacity-90 rounded-lg  hover:scale-110"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={saveFlashcards}
-                                    className="py-2 px-4 bg-[#750D37] text-[#B3DEC1] rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-110"
+                                    className="py-2 px-4 bg-[#f0ebd8] text-[#1d2d44] font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-110"
                                 >
                                     Save
                                 </button>
