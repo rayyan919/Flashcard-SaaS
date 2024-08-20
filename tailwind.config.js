@@ -4,11 +4,11 @@ module.exports = {
     "app/page.js",
     "app/generate/page.js",
     "app/flashcards/page.js",
-    "app/flashcard/page.js"
+    "app/flashcard/page.js",
+    "app/sign-in/[[...sign-in]]/page.js",
+    "app/sign-up/[[...sign-up]]/page.js"
     
-    // "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    // "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    // "./components/**/*.{js,ts,jsx,tsx,mdx}",
+
 
   ],
   theme: {
